@@ -67,7 +67,13 @@ export default async function handler(req, res) {
   const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket?.remoteAddress || "unknown";
   if (rateLimited(ip)) return res.status(429).json({ error: "slow down a little" });
 
-  const { message, history = [], system = "" } = req.body || {};
+  // Vercel only parses the body when Content-Type is application/json.
+  // The site sends text/plain on purpose: from some browsers the CORS
+  // preflight that application/json triggers stalls against the edge,
+  // while a simple request goes straight through. Accept both.
+  let body = req.body || {};
+  if (typeof body === "string") { try { body = JSON.parse(body); } catch { body = {}; } }
+  const { message, history = [], system = "" } = body;
   if (!message || typeof message !== "string" || message.length > MAX_MESSAGE_CHARS) {
     return res.status(400).json({ error: "bad message" });
   }
