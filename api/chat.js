@@ -8,7 +8,7 @@
 // actually runs free is gemini-3.8-flash, with older flashes as fallback.
 
 const MODELS = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-flash-latest", "gemini-flash-lite-latest"];
-const ALLOWED_ORIGIN = "https://kanishksaini-007.github.io";
+const ALLOWED_ORIGIN = "https://kanishk-saini-007.github.io";
 
 // request shaping: keep payloads small so one visitor can't burn the quota
 const MAX_MESSAGE_CHARS = 600;
